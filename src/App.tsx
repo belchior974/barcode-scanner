@@ -1,5 +1,6 @@
 
-import { DeviceSelectionExample } from './ScanBarCode
+import { DeviceSelectionExample } from './ScanBarCode'
+
 function App() {
 
   return (

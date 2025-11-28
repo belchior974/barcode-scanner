@@ -1,4 +1,4 @@
-
+import './App.css'
 import { DeviceSelectionExample } from './ScanBarCode'
 
 function App() {

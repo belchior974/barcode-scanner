@@ -10,90 +10,69 @@ export const BarcodeScanner = ({ onDetected }: any) => {
     if (!scannerRef.current || initialized.current) return;
     initialized.current = true;
 
-    const startScanner = async () => {
-      try {
-        console.log("📷 Solicitando permissão da câmera...");
+    console.log("📷 Iniciando scanner…");
 
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: {
+    Quagga.init(
+      {
+        inputStream: {
+          type: "LiveStream",
+          target: scannerRef.current,
+          constraints: {
             facingMode: "environment",
             width: { ideal: 1920 },
             height: { ideal: 1080 },
+            advanced: [{ torch: false }] as any,
           },
-        });
+        },
 
-        // se não tiver vídeo, evita crash
-        if (!stream) {
-          console.error("❌ Não foi possível acessar a câmera.");
+        locator: {
+          patchSize: "large",
+          halfSample: true, // iPhone precisa
+        },
+
+        numOfWorkers: 0, // iPhone Safari = obrigatório
+
+        decoder: {
+          readers: ["code_128_reader"],
+        },
+
+        locate: true,
+      },
+      (err) => {
+        if (err) {
+          console.error("❌ Quagga init error:", err);
           return;
         }
-
-        console.log("📷 Permissão concedida, iniciando Quagga...");
-
-        Quagga.init(
-          {
-            inputStream: {
-              type: "LiveStream",
-              target: scannerRef.current as any,
-              constraints: {
-                facingMode: "environment",
-                width: { ideal: 1920 },
-                height: { ideal: 1080 },
-              },
-            },
-
-            locator: {
-              patchSize: "medium",
-              halfSample: false,
-            },
-
-            numOfWorkers: 1, // iOS precisa ser 1
-
-            decoder: {
-              readers: ["code_128_reader"],
-            },
-
-            locate: true,
-          },
-          (err) => {
-            if (err) {
-              console.error("❌ Erro ao iniciar Quagga:", err);
-              return;
-            }
-
-            Quagga.start();
-            console.log("🚀 Quagga iniciado com sucesso!");
-          }
-        );
-
-        const handleDetected = (result: any) => {
-          const code = result?.codeResult?.code;
-
-          if (code && !hasFired.current) {
-            hasFired.current = true;
-
-            console.log("📦 Código detectado:", code);
-
-            onDetected(code);
-
-            // opcional: parar para evitar múltiplas leituras
-            Quagga.stop();
-          }
-        };
-
-        Quagga.onDetected(handleDetected);
-
-        return () => {
-          console.log("🛑 Finalizando scanner...");
-          Quagga.offDetected(handleDetected);
-          Quagga.stop();
-        };
-      } catch (error) {
-        console.error("❌ Erro ao acessar câmera:", error);
+        console.log("🚀 Quagga iniciado!");
+        Quagga.start();
       }
+    );
+
+    const handleDetected = (result: any) => {
+      const code = result?.codeResult?.code;
+      const confidence = result?.codeResult?.confidence || 0;
+
+      console.log("📡 Tentativa:", code, "Confiança:", confidence);
+
+      if (!code) return;
+      if (confidence < 40) return; // filtra ruído
+      if (hasFired.current) return;
+
+      hasFired.current = true;
+
+      console.log("✅ Código detectado:", code);
+      onDetected(code);
+
+      Quagga.stop();
     };
 
-    startScanner();
+    Quagga.onDetected(handleDetected);
+
+    return () => {
+      console.log("🛑 Encerrando scanner...");
+      Quagga.offDetected(handleDetected);
+      Quagga.stop();
+    };
   }, [onDetected]);
 
   return (

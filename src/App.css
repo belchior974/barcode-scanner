@@ -49,3 +49,11 @@
   width: 100% !important;
   height: 100% !important;
 }
+
+
+
+#interactive.viewport {
+  width: 100%;
+  max-width: 640px; /* Match camera constraints */
+  height: 480px;
+}

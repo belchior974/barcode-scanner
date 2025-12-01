@@ -1,13 +1,29 @@
-import './App.css'
-import { DeviceSelectionExample } from './ScanBarCode'
+import { useState } from "react";
+import "./App.css";
+import { DeviceSelectionExample } from "./ScanBarCode";
+import BarcodeScanner from "./QuaggaBarReader";
 
 function App() {
+  const [scannedCode, setScannedCode] = useState(null);
+
+  const handleBarcodeDetected = (result: any) => {
+    if (result && result.codeResult) {
+      setScannedCode(result.codeResult.code);
+      // Optionally, stop scanning after a successful scan
+      // Quagga.stop();
+    }
+  };
 
   return (
-    <>
-      <DeviceSelectionExample />
-    </>
-  )
+    <div>
+      <h1>React Barcode Scanner</h1>
+      {scannedCode ? (
+        <p>Scanned Code: {scannedCode}</p>
+      ) : (
+        <BarcodeScanner onDetected={handleBarcodeDetected} />
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;

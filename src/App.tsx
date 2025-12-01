@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { DeviceSelectionExample } from "./ScanBarCode";
+// import { DeviceSelectionExample } from "./ScanBarCode";
 import BarcodeScanner from "./QuaggaBarReader";
 
 function App() {

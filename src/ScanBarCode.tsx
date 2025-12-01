@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import BarcodeScannerComponent from "react-qr-barcode-scanner";
-import { BarcodeFormat } from "@zxing/library";
+// import { BarcodeFormat } from "@zxing/library";
 
 export const DeviceSelectionExample = () => {
   const [data, setData] = useState("");

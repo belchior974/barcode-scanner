@@ -5,8 +5,7 @@
   /* text-align: center; */
 }
 
-
-/* Container base */
+/* Base */
 .scanner-wrapper {
   width: 600px;
   height: 300px;
@@ -17,27 +16,34 @@
   position: relative;
 }
 
-/* MOBILE -> horizontal */
-.scanner-wrapper.mobile {
+/* MOBILE PORTRAIT (em pé) → rotacionar */
+.scanner-wrapper.mobile.portrait {
   width: 100%;
-  height: 500px;
+  height: 250px;
 }
 
-/* MOBILE -> rotacionar o vídeo */
-.scanner-wrapper.mobile video {
-  transform: rotate(-90deg) scale(1.5);
-  transform-origin: center;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
+.scanner-wrapper.mobile.portrait video {
+  transform: rotate(-90deg) scale(1.4);
+  transform-origin: center center;
+
   position: absolute;
   top: 0;
   left: 0;
-}
 
-/* Desktop */
-.scanner-wrapper video {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
+}
+
+/* MOBILE LANDSCAPE (de lado) → não girar */
+.scanner-wrapper.mobile.landscape {
+  width: 100vw;
+  height: 60vh;
+}
+
+.scanner-wrapper.mobile.landscape video {
+  transform: rotate(0deg) scale(1.05);
+  object-fit: cover !important;
+  width: 100% !important;
+  height: 100% !important;
 }

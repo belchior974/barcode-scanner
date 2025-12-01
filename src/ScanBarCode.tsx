@@ -7,8 +7,7 @@ export const DeviceSelectionExample = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isPortrait, setIsPortrait] = useState(true);
 
-
-   useEffect(() => {
+  useEffect(() => {
     const checkMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     setIsMobile(checkMobile);
 
@@ -28,7 +27,13 @@ export const DeviceSelectionExample = () => {
     };
   }, []);
 
-   return (
+  const extractCode = (result: any) => {
+    if (!result) return null;
+
+    return result.text || result?.rawValue || result?.codeResult?.code || null;
+  };
+
+  return (
     <div style={{ padding: 20, textAlign: "center" }}>
       <h2>Leitor EAN-13</h2>
 
@@ -45,13 +50,23 @@ export const DeviceSelectionExample = () => {
           width="100%"
           height="100%"
           onUpdate={(err, result) => {
-            console.log('err', err)
-            if (result) {
-              console.log('result', result);
-              setData(result.getText());
+            if (err) {
+              console.log("err", err);
+              return;
+            }
+
+            const code = extractCode(result);
+
+            if (code) {
+              console.log("Código lido:", code);
+              setData(code);
             }
           }}
-          formats={[BarcodeFormat.EAN_13]}
+          videoConstraints={{
+            facingMode: { ideal: "environment" },
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
+          }}
         />
       </div>
 

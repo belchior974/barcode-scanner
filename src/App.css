@@ -18,7 +18,7 @@
 
 /* MOBILE PORTRAIT (em pé) → rotacionar */
 .scanner-wrapper.mobile.portrait {
-  width: 100%;
+  width: 70%;
   height: 250px;
 }
 

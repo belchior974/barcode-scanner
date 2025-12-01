@@ -1,22 +1,19 @@
 import { useState } from "react";
 import "./App.css";
-// import { DeviceSelectionExample } from "./ScanBarCode";
 import { BarcodeScanner } from "./reader";
 
 function App() {
-  const [scannedCode, setScannedCode] = useState(null);
+  const [scannedCode, setScannedCode] = useState<string | null>(null);
 
-  const handleBarcodeDetected = (result: any) => {
-    if (result && result.codeResult) {
-      setScannedCode(result.codeResult.code);
-      // Optionally, stop scanning after a successful scan
-      // Quagga.stop();
-    }
+  const handleBarcodeDetected = (code: string) => {
+    console.log("📦 Código detectado:", code);
+    setScannedCode(code);
   };
 
   return (
     <div>
       <h1>React Barcode Scanner</h1>
+
       {scannedCode ? (
         <p>Scanned Code: {scannedCode}</p>
       ) : (

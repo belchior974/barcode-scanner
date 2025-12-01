@@ -1,12 +1,19 @@
 import { useEffect, useRef } from "react";
-import { BrowserMultiFormatReader, BarcodeFormat, DecodeHintType } from "@zxing/library";
+import {
+  BrowserMultiFormatReader,
+  BarcodeFormat,
+  DecodeHintType,
+} from "@zxing/library";
 
-export const BarcodeScanner = ({ onDetected }: { onDetected: (code: string) => void }) => {
+export const BarcodeScanner = ({
+  onDetected,
+}: {
+  onDetected: (code: string) => void;
+}) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const hasFired = useRef(false);
   const readerRef = useRef<BrowserMultiFormatReader | null>(null);
 
-  // 🔔 Som ao detectar (beep)
   const playBeep = () => {
     const audio = new Audio(
       "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA="
@@ -14,21 +21,27 @@ export const BarcodeScanner = ({ onDetected }: { onDetected: (code: string) => v
     audio.play().catch(() => {});
   };
 
-  // 📳 Vibração ao detectar
   const vibrate = () => {
-    if (navigator.vibrate) {
-      navigator.vibrate(150);
-    }
+    if (navigator.vibrate) navigator.vibrate(150);
   };
 
   useEffect(() => {
     const start = async () => {
       try {
-        console.log("📷 Solicitando câmera...");
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(
+          (d) => d.kind === "videoinput"
+        );
 
+        const backCamera =
+          videoDevices.find((d) =>
+            d.label.toLowerCase().includes("back")
+          ) || videoDevices[0];
+
+        // Stream manual
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
-            facingMode: { ideal: "environment" },
+            deviceId: backCamera.deviceId,
             width: { ideal: 1920 },
             height: { ideal: 1080 },
           },
@@ -36,11 +49,11 @@ export const BarcodeScanner = ({ onDetected }: { onDetected: (code: string) => v
 
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
-          videoRef.current.setAttribute("playsinline", "true"); // iPhone fix
+          videoRef.current.setAttribute("playsinline", "true");
           await videoRef.current.play();
         }
 
-        // ZXing hints
+        // ZXing
         const hints = new Map();
         hints.set(DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.CODE_128]);
         hints.set(DecodeHintType.TRY_HARDER, true);
@@ -48,34 +61,29 @@ export const BarcodeScanner = ({ onDetected }: { onDetected: (code: string) => v
         readerRef.current = new BrowserMultiFormatReader(hints);
 
         readerRef.current.decodeFromVideoDevice(
-          null,
+          backCamera.deviceId,
           videoRef.current!,
           (result, err) => {
-            console.log('err', err)
             if (result) {
               const code = result.getText();
 
               if (!hasFired.current) {
                 hasFired.current = true;
-
                 playBeep();
                 vibrate();
-
-                console.log("✅ Código detectado:", code);
                 onDetected(code);
               }
             }
           }
         );
       } catch (error) {
-        console.error("❌ Erro ao iniciar scanner:", error);
+        console.error("Erro ao iniciar scanner:", error);
       }
     };
 
     start();
 
     return () => {
-      console.log("🛑 Encerrando ZXing...");
       readerRef.current?.reset();
       const stream = videoRef.current?.srcObject as MediaStream;
       stream?.getTracks().forEach((t) => t.stop());
@@ -102,7 +110,7 @@ export const BarcodeScanner = ({ onDetected }: { onDetected: (code: string) => v
         }}
       />
 
-      {/* 🎯 Retícula central */}
+      {/* Retícula */}
       <div
         style={{
           position: "absolute",
@@ -115,7 +123,6 @@ export const BarcodeScanner = ({ onDetected }: { onDetected: (code: string) => v
         }}
       />
 
-      {/* Box guia */}
       <div
         style={{
           position: "absolute",

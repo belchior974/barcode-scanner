@@ -1,24 +1,41 @@
-import { Scanner } from "@yudiel/react-qr-scanner";
+import { useState } from "react";
+import BarcodeScannerComponent from "react-qr-barcode-scanner";
 
 export const DeviceSelectionExample = () => {
-  const handleScan = (detectedCodes: any) => {
-    console.log("Detected codes:", detectedCodes);
-    // detectedCodes is an array of IDetectedBarcode objects
-    detectedCodes.forEach((code: any) => {
-      alert(`${code.rawValue}`);
-      console.log(`Format: ${code.format}, Value: ${code.rawValue}`);
-    });
-  };
+  const [data, setData] = useState("");
 
   return (
-    <Scanner
-      onScan={handleScan}
-      onError={(error) => console.error(error)}
-      // Aqui você limita para ler apenas o tipo desejado
-      formats={["ean_13"]}
-      //   constraints={{
-      //     video: { facingMode: "environment" }
-      //   }}
-    />
+    <div style={{ padding: 20, textAlign: "center" }}>
+      <h2>Leitor de Código de Barras (EAN-13)</h2>
+
+      <div
+        style={{
+          width: "100%",
+          maxWidth: 700,
+          height: 250,
+          margin: "0 auto",
+          border: "3px solid #00FF9D",
+          borderRadius: "8px",
+          overflow: "hidden",
+        }}
+      >
+        <BarcodeScannerComponent
+          width={"100%"}
+          height={"100%"}
+          onUpdate={(err, result: any) => {
+            if (result) {
+              setData(result.text);
+            }
+          }}
+        />
+      </div>
+
+      <h3 style={{ marginTop: 20 }}>
+        Resultado:{" "}
+        <span style={{ color: "#572580", fontWeight: "bold" }}>
+          {data || "Aguardando leitura..."}
+        </span>
+      </h3>
+    </div>
   );
 };

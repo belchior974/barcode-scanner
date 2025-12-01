@@ -1,53 +1,75 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Quagga from "@ericblade/quagga2";
 
 export const BarcodeScanner = ({ onDetected }: any) => {
-  const scannerRef = useRef(null);
-  const [scanning, setScanning] = useState(false);
+  const scannerRef = useRef<HTMLDivElement | null>(null);
+  const initialized = useRef(false);
 
   useEffect(() => {
-    if (scannerRef.current && !scanning) {
-      Quagga.init(
-        {
-          inputStream: {
-            type: "LiveStream",
-            constraints: {
-              width: 640,
-              height: 480,
-              facingMode: "environment", // or 'user'
-            },
+    if (!scannerRef.current || initialized.current) return;
+
+    initialized.current = true;
+
+    Quagga.init(
+      {
+        inputStream: {
+          type: "LiveStream",
+          target: scannerRef.current, // 🔥 evita flicker
+          constraints: {
+            facingMode: "environment",
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
           },
-          locator: {
-            patchSize: "medium",
-            halfSample: true,
-          },
-          numOfWorkers: 0, // Set to 0 for single thread, or more for multi-threading
-          decoder: {
-            readers: ["ean_reader", "code_128_reader"], // Specify barcode types
-          },
-          locate: true,
         },
-        function (err) {
-          if (err) {
-            console.error(err);
-            return;
-          }
-          Quagga.start();
-          setScanning(true);
+        locator: {
+          patchSize: "medium",
+          halfSample: true,
+        },
+        numOfWorkers: navigator.hardwareConcurrency
+          ? Math.max(1, navigator.hardwareConcurrency - 1)
+          : 2, // 🔥 mais estável
+        decoder: {
+          readers: ["ean_reader", "code_128_reader"],
+        },
+        locate: true,
+      },
+      (err) => {
+        if (err) {
+          console.error("Quagga init error:", err);
+          return;
         }
-      );
+        Quagga.start();
+        console.log("Quagga started");
+      }
+    );
 
-      Quagga.onDetected(onDetected); // Attach the detection callback
+    const handleDetected = (result: any) => {
+      if (result?.codeResult?.code) {
+        onDetected(result);
+      }
+    };
 
-      return () => {
-        Quagga.offDetected(onDetected);
-        Quagga.stop();
-        setScanning(false);
-      };
-    }
-  }, [onDetected, scanning]);
+    Quagga.onDetected(handleDetected);
 
-  return <div id="interactive" className="viewport" ref={scannerRef} />;
+    return () => {
+      console.log("Stopping Quagga…");
+      Quagga.offDetected(handleDetected);
+      Quagga.stop();
+    };
+  }, [onDetected]);
+
+  return (
+    <div
+      id="scanner"
+      ref={scannerRef}
+      style={{
+        width: "100%",
+        height: "300px",
+        overflow: "hidden",
+        position: "relative",
+        border: "2px solid #888",
+        borderRadius: "10px",
+      }}
+    />
+  );
 };
-
-export default BarcodeScanner;

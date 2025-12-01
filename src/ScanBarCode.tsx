@@ -44,9 +44,11 @@ export const DeviceSelectionExample = () => {
         <BarcodeScannerComponent
           width="100%"
           height="100%"
-          onUpdate={(err, result: any) => {
-            console.log('err', err)
-            if (result) setData(result.text);
+          onUpdate={(err, result) => {
+            if (result) {
+              console.log('result', result);
+              setData(result.getText());
+            }
           }}
           formats={[BarcodeFormat.EAN_13]}
         />

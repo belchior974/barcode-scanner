@@ -14,23 +14,32 @@ export const BarcodeScanner = ({ onDetected }: any) => {
       {
         inputStream: {
           type: "LiveStream",
-          target: scannerRef.current, // 🔥 evita flicker
+          target: scannerRef.current,
           constraints: {
             facingMode: "environment",
-            width: { ideal: 1280 },
-            height: { ideal: 720 },
+            width: { ideal: 1920 },
+            height: { ideal: 1080 },
+
+            // 🔥 melhora foco e nitidez
+            advanced: [
+              { focusMode: "continuous" },
+              { torch: false },
+              { zoom: 2 }, // opcional - aproxima o código
+            ] as any,
           },
         },
+
         locator: {
-          patchSize: "medium",
-          halfSample: true,
+          patchSize: "large",
+          halfSample: false,
         },
-        numOfWorkers: navigator.hardwareConcurrency
-          ? Math.max(1, navigator.hardwareConcurrency - 1)
-          : 2, // 🔥 mais estável
+
+        numOfWorkers: 1, // 🔥 mobile mais estável
+
         decoder: {
           readers: ["ean_reader"],
         },
+
         locate: true,
       },
       (err) => {
@@ -39,20 +48,19 @@ export const BarcodeScanner = ({ onDetected }: any) => {
           return;
         }
         Quagga.start();
-        console.log("Quagga started");
+        console.log("🔥 Quagga started with high quality");
       }
     );
 
     const handleDetected = (result: any) => {
       if (result?.codeResult?.code) {
-        onDetected(result);
+        onDetected(result.codeResult.code);
       }
     };
 
     Quagga.onDetected(handleDetected);
 
     return () => {
-      console.log("Stopping Quagga…");
       Quagga.offDetected(handleDetected);
       Quagga.stop();
     };

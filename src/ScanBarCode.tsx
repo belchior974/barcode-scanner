@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import BarcodeScannerComponent from "react-qr-barcode-scanner";
+import { BarcodeFormat } from "@zxing/library";
 
 export const DeviceSelectionExample = () => {
   const [data, setData] = useState("");
@@ -47,6 +48,7 @@ export const DeviceSelectionExample = () => {
             console.log('err', err)
             if (result) setData(result.text);
           }}
+          formats={[BarcodeFormat.EAN_13]}
         />
       </div>
 

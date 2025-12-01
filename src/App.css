@@ -16,11 +16,7 @@
   position: relative;
 }
 
-/* MOBILE PORTRAIT (em pé) → rotacionar */
-.scanner-wrapper.mobile.portrait {
-  width: 70%;
-  height: 250px;
-}
+
 
 .scanner-wrapper.mobile.portrait video {
   transform: rotate(-90deg) scale(1.4);
@@ -35,10 +31,16 @@
   object-fit: cover !important;
 }
 
-/* MOBILE LANDSCAPE (de lado) → não girar */
+.scanner-wrapper.mobile.portrait {
+  width: 80%;
+  height: 250px;
+  margin: 0 auto;
+}
+
 .scanner-wrapper.mobile.landscape {
-  width: 100vw;
-  height: 60vh;
+  width: 80vw;
+  height: 50vh;
+  margin: 0 auto;
 }
 
 .scanner-wrapper.mobile.landscape video {

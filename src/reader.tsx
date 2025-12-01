@@ -51,6 +51,7 @@ export const BarcodeScanner = ({ onDetected }: { onDetected: (code: string) => v
           null,
           videoRef.current!,
           (result, err) => {
+            console.log('err', err)
             if (result) {
               const code = result.getText();
 

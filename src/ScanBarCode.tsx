@@ -23,6 +23,7 @@ export const DeviceSelectionExample = () => {
           width={"100%"}
           height={"100%"}
           onUpdate={(err, result: any) => {
+            console.log('err', err)
             if (result) {
               setData(result.text);
             }

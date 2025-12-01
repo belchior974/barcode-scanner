@@ -29,7 +29,7 @@ export const BarcodeScanner = ({ onDetected }: any) => {
           ? Math.max(1, navigator.hardwareConcurrency - 1)
           : 2, // 🔥 mais estável
         decoder: {
-          readers: ["ean_reader", "code_128_reader"],
+          readers: ["ean_reader"],
         },
         locate: true,
       },

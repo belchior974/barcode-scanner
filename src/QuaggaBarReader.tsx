@@ -50,7 +50,7 @@ export const BarcodeScanner = ({ onDetected }: any) => {
             numOfWorkers: 1, // iOS precisa ser 1
 
             decoder: {
-              readers: ["ean_reader"],
+              readers: ["code_128_reader"],
             },
 
             locate: true,

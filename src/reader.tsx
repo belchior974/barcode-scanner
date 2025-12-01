@@ -63,7 +63,7 @@ export const BarcodeScanner = ({
         readerRef.current.decodeFromVideoDevice(
           backCamera.deviceId,
           videoRef.current!,
-          (result, err) => {
+          (result) => {
             if (result) {
               const code = result.getText();
 

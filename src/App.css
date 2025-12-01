@@ -4,3 +4,40 @@
   /* padding: 2rem; */
   /* text-align: center; */
 }
+
+
+/* Container base */
+.scanner-wrapper {
+  width: 600px;
+  height: 300px;
+  margin: 0 auto;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* MOBILE -> horizontal */
+.scanner-wrapper.mobile {
+  width: 100%;
+  height: 500px;
+}
+
+/* MOBILE -> rotacionar o vídeo */
+.scanner-wrapper.mobile video {
+  transform: rotate(-90deg) scale(1.5);
+  transform-origin: center;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Desktop */
+.scanner-wrapper video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}

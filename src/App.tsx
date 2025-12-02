@@ -1,9 +1,10 @@
 // import { useState } from "react";
 import "./App.css";
+import { BarcodeHtml5Reader } from "./HtmlQrCode";
 // import { DeviceSelectionExample } from "./ScanBarCode";
 // import { BarcodeScanner } from "./QuaggaBarReader";
 // import { DeviceSelectionExample } from "./ScanBarCode";
-import { Barcode128Reader } from "./YudielScanner";
+// import { Barcode128Reader } from "./YudielScanner";
 
 function App() {
   // const [scannedCode, setScannedCode] = useState(null);
@@ -22,7 +23,7 @@ function App() {
       {/* {scannedCode ? (
         <p>Scanned Code: {scannedCode}</p>
       ) : ( */}
-        <Barcode128Reader  />
+        <BarcodeHtml5Reader  />
       {/* // )} */}
     </div>
   );

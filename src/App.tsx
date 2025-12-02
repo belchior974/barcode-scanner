@@ -2,7 +2,8 @@
 import "./App.css";
 // import { DeviceSelectionExample } from "./ScanBarCode";
 // import { BarcodeScanner } from "./QuaggaBarReader";
-import { DeviceSelectionExample } from "./ScanBarCode";
+// import { DeviceSelectionExample } from "./ScanBarCode";
+import { Barcode128Reader } from "./YudielScanner";
 
 function App() {
   // const [scannedCode, setScannedCode] = useState(null);
@@ -21,7 +22,7 @@ function App() {
       {/* {scannedCode ? (
         <p>Scanned Code: {scannedCode}</p>
       ) : ( */}
-        <DeviceSelectionExample  />
+        <Barcode128Reader  />
       {/* // )} */}
     </div>
   );

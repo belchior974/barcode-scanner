@@ -36,7 +36,7 @@ export const BarcodeHtml5Reader: React.FC = () => {
       fps: 10,
       qrbox: { width: 420, height: 120 },
       formatsToSupport: [
-        Html5QrcodeSupportedFormats.CODE_128,
+        // Html5QrcodeSupportedFormats.CODE_128,
         Html5QrcodeSupportedFormats.EAN_13,
       ],
     };

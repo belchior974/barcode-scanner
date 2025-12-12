@@ -52,13 +52,7 @@ export const BarcodeHtml5Reader: React.FC = () => {
 
     try {
       await scanner.current.start(
-        {
-          facingMode: "environment",
-          width: { ideal: 1920 },
-          height: { ideal: 1080 },
-          aspectRatio: 16 / 9,
-          frameRate: { ideal: 60 },
-        },
+        { facingMode: "environment" },
         config,
         onSuccess,
         onError

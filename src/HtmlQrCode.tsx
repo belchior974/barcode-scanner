@@ -29,12 +29,47 @@ export const BarcodeHtml5Reader: React.FC = () => {
     };
   }, []);
 
+  // const startScanner = async () => {
+  //   if (!scanner.current) return;
+
+  //   const config = {
+  //     fps: 8,
+  //     qrbox: { width: 480, height: 140 },
+  //     formatsToSupport: [
+  //       Html5QrcodeSupportedFormats.CODE_128,
+  //       Html5QrcodeSupportedFormats.EAN_13,
+  //     ],
+  //   };
+
+  //   const onSuccess = (decodedText: string) => {
+  //     if (decodedText !== result) {
+  //       setResult(decodedText);
+  //       console.log("Lido:", decodedText);
+  //     }
+  //   };
+
+  //   const onError = () => {};
+
+  //   try {
+  //     await scanner.current.start(
+  //       { facingMode: "environment" },
+  //       config,
+  //       onSuccess,
+  //       onError
+  //     );
+
+  //     setRunning(true);
+  //   } catch (err) {
+  //     console.error("Erro ao iniciar o scanner:", err);
+  //   }
+  // };
+
   const startScanner = async () => {
     if (!scanner.current) return;
 
     const config = {
-      fps: 10,
-      qrbox: { width: 420, height: 120 },
+      fps: 8,
+      qrbox: { width: 480, height: 140 },
       formatsToSupport: [
         Html5QrcodeSupportedFormats.CODE_128,
         Html5QrcodeSupportedFormats.EAN_13,
@@ -48,14 +83,12 @@ export const BarcodeHtml5Reader: React.FC = () => {
       }
     };
 
-    const onError = () => {};
-
     try {
       await scanner.current.start(
-        { facingMode: "environment" },
+        { facingMode: "environment" }, // 👈 SOMENTE ISSO
         config,
         onSuccess,
-        onError
+        () => {}
       );
 
       setRunning(true);
@@ -85,6 +118,7 @@ export const BarcodeHtml5Reader: React.FC = () => {
         style={{
           width: "100%",
           maxWidth: 600,
+          height: 260,
           margin: "20px auto",
         }}
       />

@@ -129,7 +129,7 @@ export const BarcodeHtml5Reader: React.FC = () => {
         <button onClick={stopScanner}>Parar Leitura</button>
       )}
 
-      <div style={{ marginTop: 70, fontSize: 18 }}>
+      <div style={{ marginTop: 150, fontSize: 18 }}>
         <strong>Resultado:</strong>{" "}
         <span style={{ color: "#fff" }}>
           {result ?? "Aguardando leitura..."}

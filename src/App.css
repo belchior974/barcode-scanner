@@ -1,59 +1,18 @@
-#root {
-  /* max-width: 1280px; */
-  margin: 0 auto;
-  /* padding: 2rem; */
-  /* text-align: center; */
+/* Container da região de leitura */
+#html5-qrcode-reader__scan_region {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-/* Base */
-.scanner-wrapper {
-  width: 600px;
-  height: 300px;
-  margin: 0 auto;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  overflow: hidden;
-  position: relative;
+/* Remove os cantos/brackets desenhados */
+#html5-qrcode-reader__scan_region div {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-
-
-.scanner-wrapper.mobile.portrait video {
-  transform: rotate(-90deg) scale(1.4);
-  transform-origin: center center;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-}
-
-.scanner-wrapper.mobile.portrait {
-  width: 80%;
-  height: 250px;
-  margin: 0 auto;
-}
-
-.scanner-wrapper.mobile.landscape {
-  width: 80vw;
-  height: 50vh;
-  margin: 0 auto;
-}
-
-.scanner-wrapper.mobile.landscape video {
-  transform: rotate(0deg) scale(1.05);
-  object-fit: cover !important;
-  width: 100% !important;
-  height: 100% !important;
-}
-
-
-
-#interactive.viewport {
-  width: 100%;
-  max-width: 640px; /* Match camera constraints */
-  height: 480px;
+/* Garante que o vídeo continue intacto */
+#html5-qrcode-reader video {
+  border-radius: 0;
 }

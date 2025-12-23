@@ -1,12 +1,12 @@
 import "./App.css";
-import { BarcodeHtml5Reader } from "./HtmlQrCode";
+import { QrCodeHtml5Reader } from "./QrCode";
 
 function App() {
-
   return (
     <div>
       <h1>React Barcode Scanner</h1>
-        <BarcodeHtml5Reader  />
+      {/* <BarcodeHtml5Reader  /> */}
+      <QrCodeHtml5Reader />
     </div>
   );
 }

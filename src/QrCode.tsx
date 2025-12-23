@@ -79,7 +79,7 @@ export const QrCodeHtml5Reader: React.FC = () => {
         style={{
           width: "100%",
           maxWidth: 420,
-          height: 300,
+          aspectRatio: "1 / 1",
           margin: "20px auto",
         }}
       />
